@@ -1,8 +1,4 @@
-import 'package:artikel_aplication/feature/auth/bloc/authentication_bloc.dart';
-import 'package:artikel_aplication/feature/auth/view/auth_screen.dart';
-import 'package:artikel_aplication/feature/home/bloc/home_bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 void main() async {
