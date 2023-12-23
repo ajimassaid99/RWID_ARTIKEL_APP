@@ -3,9 +3,9 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 void main() async {
   await Supabase.initialize(
-    url: 'https://qbliojdwcvesojyftpmz.supabase.co',
+    url: '',
     anonKey:
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFibGlvamR3Y3Zlc29qeWZ0cG16Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDI0NzQxNjgsImV4cCI6MjAxODA1MDE2OH0.mvcWQkCaD5Uq0ug0YvV9A0eNy04jjvqlWJC8lYKX78k',
+        '',
   );
   runApp(const MyApp());
 }
