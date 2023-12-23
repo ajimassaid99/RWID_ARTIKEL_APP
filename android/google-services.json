@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "386505371350",
+    "project_id": "artikelapp-59f33",
+    "storage_bucket": "artikelapp-59f33.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:386505371350:android:bb37ace094d3c6b7c32377",
+        "android_client_info": {
+          "package_name": "com.example.artikel_aplication"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBKnghOc0lg5sRiVT1gWqBRG8nmheVztLg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
