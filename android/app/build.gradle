@@ -52,10 +52,10 @@ android {
     }
       signingConfigs {
         debug {
-            storeFile file('./RWID-keystore.jks')
-            storePassword 'rwid2023'
-            keyAlias 'RWID'
-            keyPassword 'rwid2023'
+            storeFile file('./Artikel.keystore')
+            storePassword 'RWID1234'
+            keyAlias 'rwid'
+            keyPassword 'RWID1234'
         }
     }
 
