@@ -41,45 +41,40 @@ class _AuthPageState extends State<AuthPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          backgroundColor: AppColors.primary500,
-          title: const Text(
-            "Login",
-            style: TextStyle(color: AppColors.white),
-          ),
-        ),
         body: BlocListener<AuthenticationBloc, AuthenticationState>(
-          listener: (context, state) {
-            if (state is SinginSuccess) {
-              Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(
-                  builder: (BuildContext context) => const HomePage(),
-                ),
-                (route) => false,
-              );
-            }
-            if (state is SinginFailed) {}
-          },
-          child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-            FormButton(
-              label: "Login",
-              onPressed: () {
-                "Anda Telah Login".failedBar(context);
-              },
+      listener: (context, state) {
+        if (state is SinginSuccess) {
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(
+              builder: (BuildContext context) => const HomePage(),
             ),
-            20.0.height,
-            FormButtonIcon(
-              image: Image.asset("assets/icon/google.png"),
-              label: "Dengan Google",
-              backgroundColor: AppColors.grey300,
-              textColor: AppColors.grey700,
-              onPressed: () {
-                _googleSignIn();
-              },
-            )
-          ]),
-        ));
+            (route) => false,
+          );
+        }
+        if (state is SinginFailed) {}
+      },
+      child: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+          Image.asset(
+            'assets/image/logo.jpeg',
+            width: 300,
+            height: 300,
+          ),
+          20.0.height,
+          FormButtonIcon(
+            image: Image.asset("assets/icon/google.png"),
+            label: "Login Dengan Google",
+            backgroundColor: AppColors.grey300,
+            textColor: AppColors.grey700,
+            onPressed: () {
+              _googleSignIn();
+            },
+          )
+        ]),
+      ),
+    ));
   }
 
   _googleSignIn() async {
