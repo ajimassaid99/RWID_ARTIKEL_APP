@@ -24,5 +24,17 @@ class AuthenticationBloc
         emit(SinginFailed());
       }
     });
+    on<SignIn>((event, emit) async {
+      try {
+        emit(SinginLoading());
+        await supabase.auth.signInWithPassword(
+          email: event.email,
+          password: event.password,
+        );
+        emit(SinginSuccess());
+      } catch (e) {
+        emit(SinginFailed());
+      }
+    });
   }
 }

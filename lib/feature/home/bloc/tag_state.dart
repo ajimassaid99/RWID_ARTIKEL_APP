@@ -12,7 +12,7 @@ class TagInitial extends TagState {}
 class TagLoading extends TagState {}
 
 class TagSuccess extends TagState {
-  final List data;
+  final List<TagModel> data;
 
   const TagSuccess({required this.data});
 

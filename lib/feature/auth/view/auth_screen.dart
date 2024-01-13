@@ -1,10 +1,15 @@
 import 'package:artikel_aplication/core/constant/colors.dart';
+import 'package:artikel_aplication/core/constant/size.dart';
 import 'package:artikel_aplication/core/extention/doubel_ext.dart';
 import 'package:artikel_aplication/core/extention/string_ext.dart';
 import 'package:artikel_aplication/core/widget/button_icon_widget.dart';
 import 'package:artikel_aplication/core/widget/button_widget.dart';
+import 'package:artikel_aplication/core/widget/form_input__password_widget.dart';
+import 'package:artikel_aplication/core/widget/form_input_widget.dart';
 import 'package:artikel_aplication/feature/auth/bloc/bloc/authentication_bloc.dart';
 import 'package:artikel_aplication/feature/home/view/home.dart';
+import 'package:artikel_aplication/feature/home/view/pilih_kategory.dart';
+import 'package:artikel_aplication/feature/register/view/register_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -18,6 +23,9 @@ class AuthPage extends StatefulWidget {
 }
 
 class _AuthPageState extends State<AuthPage> {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
   late AuthenticationBloc authBloc;
   final supabase = Supabase.instance.client;
 
@@ -29,7 +37,7 @@ class _AuthPageState extends State<AuthPage> {
         Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(
-            builder: (BuildContext context) => const HomePage(),
+            builder: (BuildContext context) => const MyHomePage(),
           ),
           (route) => false,
         );
@@ -41,40 +49,124 @@ class _AuthPageState extends State<AuthPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: BlocListener<AuthenticationBloc, AuthenticationState>(
-      listener: (context, state) {
-        if (state is SinginSuccess) {
-          Navigator.pushAndRemoveUntil(
-            context,
-            MaterialPageRoute(
-              builder: (BuildContext context) => const HomePage(),
-            ),
-            (route) => false,
-          );
-        }
-        if (state is SinginFailed) {}
-      },
-      child: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-          Image.asset(
-            'assets/image/logo.jpeg',
-            width: 300,
-            height: 300,
+        body: BlocConsumer<AuthenticationBloc, AuthenticationState>(
+            listener: (context, state) {
+      if (state is SinginSuccess) {
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(
+            builder: (BuildContext context) => const MyHomePage(),
           ),
-          20.0.height,
-          FormButtonIcon(
-            image: Image.asset("assets/icon/google.png"),
-            label: "Login Dengan Google",
-            backgroundColor: AppColors.grey300,
-            textColor: AppColors.grey700,
-            onPressed: () {
-              _googleSignIn();
-            },
-          )
-        ]),
-      ),
-    ));
+          (route) => false,
+        );
+      }
+      if (state is SinginFailed) {}
+    }, builder: (context, state) {
+      if (state is SinginLoading) {
+        return const CircularProgressIndicator();
+      }
+
+      return Form(
+        key: _formKey,
+        child: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Center(
+            child: SingleChildScrollView(
+              child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Image.asset(
+                      'assets/image/logo.jpeg',
+                      width: 300,
+                      height: 300,
+                    ),
+                    FormInput(
+                      controller: _emailController,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Email tidak boleh kosong';
+                        } else if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
+                            .hasMatch(value)) {
+                          return 'Alamat email tidak valid';
+                        }
+                        return null;
+                      },
+                      label: "Email",
+                      hint: "email",
+                      icon: const Icon(Icons.email),
+                    ),
+                    20.0.height,
+                    FormInputPassword(
+                      controller: _passwordController,
+                      // validator: (value) {
+                      //   if (value == null || value.isEmpty) {
+                      //     return 'Password tidak boleh kosong';
+                      //   } else if (value.length < 6) {
+                      //     return 'Password harus memiliki setidaknya 6 karakter';
+                      //   }
+                      //   return null;
+                      // },
+                      label: "Password",
+                      hint: "password",
+                    ),
+                    20.0.height,
+                    FormButton(
+                      label: "Login",
+                      onPressed: () async {
+                        if (_formKey.currentState!.validate()) {
+                          context.read<AuthenticationBloc>().add(SignIn(
+                              email: _emailController.text,
+                              password: _passwordController.text));
+                        }
+                      },
+                    ),
+                    10.0.height,
+                    TextButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => RegisterPage()),
+                          );
+                        },
+                        child: Text("Belum Punya Akun? Register Sekarang")),
+                    20.0.height,
+                    const Row(
+                      children: [
+                        Expanded(
+                          child: Divider(
+                            thickness: 1,
+                            color: AppColors.black,
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: Text(
+                            'Atau',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        Expanded(
+                          child: Divider(thickness: 1, color: AppColors.black),
+                        )
+                      ],
+                    ),
+                    20.0.height,
+                    FormButtonIcon(
+                      image: Image.asset("assets/icon/google.png"),
+                      label: "Login Dengan Google",
+                      backgroundColor: AppColors.grey300,
+                      textColor: AppColors.grey700,
+                      onPressed: () {
+                        _googleSignIn();
+                      },
+                    )
+                  ]),
+            ),
+          ),
+        ),
+      );
+    }));
   }
 
   _googleSignIn() async {

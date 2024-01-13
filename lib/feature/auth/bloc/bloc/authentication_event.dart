@@ -16,3 +16,14 @@ class SingInWithGoogel extends AuthenticationEvent {
   @override
   List<Object> get props => [idToken, accessToken];
 }
+
+
+ class SignIn extends AuthenticationEvent {
+  final String email;
+  final String password;
+
+  const SignIn({required this.email, required this.password});
+
+  @override
+  List<Object> get props => [email,password];
+}

@@ -1,139 +1,109 @@
-import 'dart:io';
-
 import 'package:artikel_aplication/core/constant/colors.dart';
-import 'package:artikel_aplication/core/extention/string_ext.dart';
-import 'package:artikel_aplication/feature/home/bloc/tag_bloc.dart';
+import 'package:artikel_aplication/core/constant/images.dart';
+import 'package:artikel_aplication/feature/beranda/view/beranda.dart';
+import 'package:artikel_aplication/feature/bookmark/view/bookmark_screen.dart';
+import 'package:artikel_aplication/feature/profile/view/profile_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:image_picker/image_picker.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+class MyHomePage extends StatefulWidget {
+  const MyHomePage({Key? key}) : super(key: key);
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<MyHomePage> createState() => _MyHomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
-  XFile? _image;
+class _MyHomePageState extends State<MyHomePage> {
+  int _currentIndex = 0;
 
-  Future<void> _getImage(ImageSource source) async {
-    final picker = ImagePicker();
-    XFile? pickedImage = await picker.pickImage(source: source);
+  void _onTap(int index) {
     setState(() {
-      _image = pickedImage;
+      _currentIndex = index;
     });
-  }
-
-  List<int> selectedtags = [];
-
-  late TagBloc tagBloc;
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    tagBloc = context.read<TagBloc>();
-
-    tagBloc.add(const getTag());
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: AppColors.primary500,
-        title: const Text(
-          "Choose Your tags",
-          style: TextStyle(color: AppColors.white),
-        ),
+      body: IndexedStack(
+        index: _currentIndex,
+        children: const [
+          DashboardScreen(),
+          BookmarkScreen(),
+          ProfilePage(),
+        ],
       ),
-      body: BlocConsumer<TagBloc, TagState>(
-        listener: (context, state) {
-          if (state is CreateSuccess) {
-            "Data Berhasil Di Update".succeedBar(context);
-          }
-        },
-        builder: (context, state) {
-          if (state is TagLoading) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-          if (state is TagSuccess) {
-            final List data = state.data;
-            return Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  _image == null
-                      ? Text('No image selected.')
-                      : Image.file(File(_image!.path)),
-                  SizedBox(height: 20),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: <Widget>[
-                      ElevatedButton(
-                        onPressed: () {
-                          _getImage(ImageSource.gallery);
-                        },
-                        child: Text('From Gallery'),
-                      ),
-                      ElevatedButton(
-                        onPressed: () {
-                          _getImage(ImageSource.camera);
-                        },
-                        child: Text('From Camera'),
-                      ),
-                    ],
-                  ),
-                ],
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _currentIndex,
+        selectedItemColor: Colors.black,
+        unselectedItemColor: AppColors.grey500,
+        unselectedLabelStyle: const TextStyle(fontWeight: FontWeight.normal),
+        type: BottomNavigationBarType.fixed,
+        items: [
+          BottomNavigationBarItem(
+            icon: InkWell(
+              onTap: () => _onTap(0),
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: 4),
+                child: Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 30, vertical: 4),
+                  decoration: BoxDecoration(
+                      color: _currentIndex == 0
+                          ? AppColors.primary300
+                          : AppColors.white,
+                      borderRadius:
+                          const BorderRadius.all(Radius.circular(10))),
+                  child: const ImageIcon(AppImages.beranda),
+                ),
               ),
-            );
-            //   return ListView.builder(
-            //     itemCount: data.length,
-            //     itemBuilder: (BuildContext context, int index) {
-            //       final TagModel tag = data[index];
-            //       final isSelected = selectedtags.contains(tag.id);
-
-            //       return CheckboxListTile(
-            //         title: Text(tag.tag),
-            //         value: isSelected,
-            //         onChanged: (bool? value) {
-            //           setState(() {
-            //             if (value != null && value) {
-            //               selectedtags.add(tag.id);
-            //             } else {
-            //               selectedtags.remove(tag.id);
-            //             }
-            //           });
-            //         },
-            //       );
-            //     },
-            //   );
-          }
-          return const Center(
-            child: Text("Data Kosong"),
-          );
-        },
+            ),
+            label: 'Dashboard',
+            backgroundColor: AppColors.white,
+          ),
+          BottomNavigationBarItem(
+            icon: InkWell(
+              onTap: () => _onTap(1),
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: 4),
+                child: Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 30, vertical: 4),
+                  decoration: BoxDecoration(
+                      color: _currentIndex == 1
+                          ? AppColors.primary300
+                          : AppColors.white,
+                      borderRadius:
+                          const BorderRadius.all(Radius.circular(10))),
+                  child: const ImageIcon(AppImages.bookmark),
+                ),
+              ),
+            ),
+            label: 'Pesanan',
+            backgroundColor: AppColors.white,
+          ),
+          BottomNavigationBarItem(
+            icon: InkWell(
+              onTap: () => _onTap(2),
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: 4),
+                child: Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 30, vertical: 4),
+                  decoration: BoxDecoration(
+                      color: _currentIndex == 2
+                          ? AppColors.primary300
+                          : AppColors.white,
+                      borderRadius:
+                          const BorderRadius.all(Radius.circular(10))),
+                  child: const ImageIcon(AppImages.profile),
+                ),
+              ),
+            ),
+            label: 'Profil',
+            backgroundColor: AppColors.white,
+          ),
+        ],
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
-          tagBloc.add(UpdateTag(
-              tagId: 1, tagName: "Flutter 1", image: _image?.path ?? ''));
-          // Implement logic to proceed based on selectedtags
-          // For example, navigate to a new page passing the selected tags.
-          // Navigator.push(
-          //   context,
-          //   MaterialPageRoute(
-          //     builder: (context) => NextPage(selectedtags: selectedtags),
-          //   ),
-          // );
-        },
-        label: const Text('Continue'),
-        backgroundColor: AppColors.primary500,
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }
