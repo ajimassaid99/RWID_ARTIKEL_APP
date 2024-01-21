@@ -1,9 +1,10 @@
-
 import 'package:artikel_aplication/core/constant/colors.dart';
 import 'package:artikel_aplication/core/constant/icon.dart';
 import 'package:artikel_aplication/core/extention/doubel_ext.dart';
 import 'package:artikel_aplication/core/widget/button_widget.dart';
+import 'package:artikel_aplication/feature/auth/bloc/bloc/authentication_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -12,7 +13,7 @@ class ProfilePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Saya'),
+        title: const Text('Profile'),
         centerTitle: true,
       ),
       body: ListView(children: [
@@ -26,7 +27,7 @@ class ProfilePage extends StatelessWidget {
                 const Padding(
                   padding: EdgeInsets.symmetric(horizontal: 12),
                   child: Text(
-                    "Saya",
+                    "My Profile",
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
@@ -43,7 +44,7 @@ class ProfilePage extends StatelessWidget {
                         backgroundColor: AppColors.primary50,
                         child: ClipOval(
                           child: Image(
-                            image: AppIcons.profile ,
+                            image: AppIcons.profile,
                             width: 30,
                           ),
                         ),
@@ -53,7 +54,7 @@ class ProfilePage extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Fauzi Maulia Tarigan',
+                            'Muhammad Aji Massaid',
                             style: TextStyle(
                               fontSize: 18.0,
                               fontWeight: FontWeight.bold,
@@ -62,7 +63,7 @@ class ProfilePage extends StatelessWidget {
                           ),
                           SizedBox(height: 8.0),
                           Text(
-                            '@username',
+                            '@Amassaid99',
                             style: TextStyle(
                               color: AppColors.grey500,
                               fontSize: 16.0,
@@ -103,7 +104,7 @@ class ProfilePage extends StatelessWidget {
                         ],
                       ),
                       Text(
-                        'Fauzi@gmail.com',
+                        'Amassaid99@gmail.com',
                         style: TextStyle(
                           fontSize: 14,
                           color: AppColors.grey700,
@@ -146,7 +147,7 @@ class ProfilePage extends StatelessWidget {
                     ],
                   ),
                 ),
-               ],
+              ],
             ),
             const Divider(
               thickness: 10,
@@ -156,9 +157,8 @@ class ProfilePage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Padding(
-                  padding: EdgeInsets.symmetric(
-                      horizontal: 12,
-                      vertical: 12 / 2),
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 12, vertical: 12 / 2),
                   child: Text(
                     "Akun",
                     style: TextStyle(
@@ -168,13 +168,10 @@ class ProfilePage extends StatelessWidget {
                   ),
                 ),
                 InkWell(
-                  onTap: () {
-                   
-                  },
+                  onTap: () {},
                   child: const Padding(
-                    padding: EdgeInsets.symmetric(
-                        horizontal: 12,
-                        vertical: 12 / 2),
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 12, vertical: 12 / 2),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -205,7 +202,7 @@ class ProfilePage extends StatelessWidget {
                     ),
                   ),
                 ),
-                 ],
+              ],
             ),
             const Divider(
               thickness: 10,
@@ -215,9 +212,8 @@ class ProfilePage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Padding(
-                  padding: EdgeInsets.symmetric(
-                      horizontal: 12,
-                      vertical: 12 / 2),
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 12, vertical: 12 / 2),
                   child: Text(
                     "Keamanan",
                     style: TextStyle(
@@ -227,13 +223,10 @@ class ProfilePage extends StatelessWidget {
                   ),
                 ),
                 InkWell(
-                  onTap: () {
-                    
-                  },
+                  onTap: () {},
                   child: const Padding(
-                    padding: EdgeInsets.symmetric(
-                        horizontal: 12,
-                        vertical: 12 / 2),
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 12, vertical: 12 / 2),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -266,18 +259,48 @@ class ProfilePage extends StatelessWidget {
                 )
               ],
             ),
+            40.0.height,
             Container(
               color: AppColors.grey50,
               child: Padding(
-                padding: const EdgeInsets.all(20),
-                child: FormButton(
-                  label: 'Log out',
-                  onPressed: () {
-                   
-                  },
-                  backgroundColor: AppColors.error500,
-                ),
-              ),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 70),
+                  child: FormButton(
+                    label: 'Log out',
+                    onPressed: () {
+                      // Tampilkan dialog konfirmasi
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: const Text('Konfirmasi Logout'),
+                            content:
+                                const Text('Apakah Anda yakin ingin logout?'),
+                            actions: <Widget>[
+                              TextButton(
+                                onPressed: () {
+                                  // Tutup dialog
+                                  Navigator.of(context).pop();
+                                },
+                                child: const Text('Batal'),
+                              ),
+                              TextButton(
+                                onPressed: () {
+                                  // Lakukan logout
+                                  context.read<AuthenticationBloc>().add(
+                                      const SignOut());
+                                  Navigator.of(context)
+                                      .pop(); 
+                                },
+                                child: const Text('Ya, Logout'),
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    },
+                    backgroundColor: AppColors.error500,
+                  )),
             ),
           ],
         ),

@@ -6,14 +6,12 @@ class CustomSmartRefresher extends StatelessWidget {
   final RefreshController controller;
   final Widget? child;
   final VoidCallback? onRefresh;
-  final bool isDark;
 
   const CustomSmartRefresher({
     Key? key,
     required this.controller,
     this.child,
     this.onRefresh,
-    this.isDark = false,
   }) : super(key: key);
 
   @override
@@ -26,27 +24,27 @@ class CustomSmartRefresher extends StatelessWidget {
       onRefresh: onRefresh,
       header: ClassicHeader(
         textStyle: (context.text.bodyMedium ??
-                TextStyle(
+                const TextStyle(
                     fontSize: 14,
-                    color: isDark ? context.onBackground : context.onPrimary))
-            .copyWith(color: isDark ? context.onBackground : context.onPrimary),
-        failedIcon: Icon(Icons.error_outline_rounded,
-            color: isDark ? context.onBackground : context.onPrimary),
+                    color: Colors.black))
+            .copyWith(color: Colors.black),
+        failedIcon: const Icon(Icons.error_outline_rounded,
+            color: Colors.black),
         failedText: 'Gagal mengambil data',
-        refreshingIcon: SizedBox(
+        refreshingIcon: const SizedBox(
             width: 24,
             height: 24,
             child: CircularProgressIndicator(
-                color: isDark ? context.onBackground : context.onPrimary)),
+                color: Colors.black)),
         refreshingText: 'Sedang Mengambil Data...',
-        completeIcon: Icon(Icons.check_circle_outlined,
-            color: isDark ? context.onBackground : context.onPrimary),
+        completeIcon: const Icon(Icons.check_circle_outlined,
+            color: Colors.black),
         completeText: 'Berhasil mengambil data',
-        releaseIcon: Icon(Icons.refresh,
-            color: isDark ? context.onBackground : context.onPrimary),
+        releaseIcon: const Icon(Icons.refresh,
+            color: Colors.black),
         releaseText: 'refresh',
-        idleIcon: Icon(Icons.arrow_downward,
-            color: isDark ? context.onBackground : context.onPrimary),
+        idleIcon: const Icon(Icons.arrow_downward,
+            color: Colors.black),
         idleText: 'Tarik ke bawah Untuk Refresh',
         spacing: 12.0,
       ),

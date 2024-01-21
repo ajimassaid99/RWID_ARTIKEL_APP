@@ -20,6 +20,7 @@ class CreateUserTag extends TagEvent{
 
 }
 
+
 class UpdateTag extends TagEvent{
   final int tagId;
   final String tagName;

@@ -49,17 +49,19 @@ class TagBloc extends Bloc<TagEvent, TagState> {
       }
     });
 
+    
+
     on<UpdateTag>((event, emit) async {
       try {
         emit(TagLoading());
 
-        
-final avatarFile = File(event.image);
-final String path = await supabase.storage.from('image').upload(
-      'public/avatar1.png',
-      avatarFile,
-      fileOptions: const FileOptions(cacheControl: '3600', upsert: false),
-    );
+        final avatarFile = File(event.image);
+        final String path = await supabase.storage.from('image').upload(
+              'public/avatar1.png',
+              avatarFile,
+              fileOptions:
+                  const FileOptions(cacheControl: '3600', upsert: false),
+            );
 
         emit(CreateSuccess());
       } catch (e) {

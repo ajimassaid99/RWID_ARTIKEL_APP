@@ -1,3 +1,4 @@
+import 'package:artikel_aplication/feature/artikel/bloc/artikel_bloc.dart';
 import 'package:artikel_aplication/feature/auth/bloc/bloc/authentication_bloc.dart';
 import 'package:artikel_aplication/feature/home/bloc/tag_bloc.dart';
 import 'package:artikel_aplication/feature/register/bloc/register_bloc.dart';
@@ -9,4 +10,5 @@ void init() {
   locator.registerFactory(() => AuthenticationBloc());
   locator.registerFactory(() => TagBloc());
   locator.registerFactory(() => RegisterBloc());
+  locator.registerFactory(() => ArtikelBloc());
 }

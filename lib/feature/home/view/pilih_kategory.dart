@@ -6,6 +6,7 @@ import 'package:artikel_aplication/core/widget/responsive_builder.dart';
 import 'package:artikel_aplication/core/widget/costum_refresh.dart';
 import 'package:artikel_aplication/feature/home/bloc/tag_bloc.dart';
 import 'package:artikel_aplication/feature/home/model/tag.dart';
+import 'package:artikel_aplication/feature/home/view/home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -42,7 +43,6 @@ class _PilihKelasScreenState extends State<PilihKelasScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: CustomSmartRefresher(
-      isDark: true,
       controller: _refreshController,
       onRefresh: () async => await _onRefresh(context),
       child: SafeArea(
@@ -52,7 +52,15 @@ class _PilihKelasScreenState extends State<PilihKelasScreen> {
               _buildTitleHeader(context),
               BlocConsumer<TagBloc, TagState>(
                 listener: (context, state) {
-                  if (state is TagSuccess) {}
+                  if (state is CreateSuccess) {
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(
+                        builder: (BuildContext context) => const MyHomePage(),
+                      ),
+                      (route) => false,
+                    );
+                  }
                 },
                 builder: (context, state) {
                   if (state is TagLoading) {
@@ -79,6 +87,11 @@ class _PilihKelasScreenState extends State<PilihKelasScreen> {
                 child: Column(
                   children: [
                     const Spacer(),
+                    Image.asset(
+                      'assets/image/logo.jpeg',
+                      width: 300,
+                      height: 300,
+                    ),
                     _buildTitleHeader(context),
                     const Spacer(),
                     _buildButton(context),
@@ -91,7 +104,15 @@ class _PilihKelasScreenState extends State<PilihKelasScreen> {
               ),
               BlocConsumer<TagBloc, TagState>(
                 listener: (context, state) {
-                  if (state is TagSuccess) {}
+                  if (state is CreateSuccess) {
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(
+                        builder: (BuildContext context) => const MyHomePage(),
+                      ),
+                      (route) => false,
+                    );
+                  }
                 },
                 builder: (context, state) {
                   if (state is TagLoading) {
@@ -122,7 +143,9 @@ class _PilihKelasScreenState extends State<PilihKelasScreen> {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 12),
       child: ElevatedButton(
-        onPressed: () async {},
+        onPressed: () async {
+          tagBloc.add(CreateUserTag(tagId: selectedId));
+        },
         style: ElevatedButton.styleFrom(
             padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 24),
             shape:
@@ -266,7 +289,7 @@ class _PilihKelasScreenState extends State<PilihKelasScreen> {
                   width: context.dp(268),
                   child: FittedBox(
                     child: Text(
-                      'Pilih Minatmu Sekarang!! dan temukan bacan menarik',
+                      'Pilih minatmu sekarang dan temukan bacaan menarik!',
                       style: context.text.bodySmall,
                     ),
                   ),

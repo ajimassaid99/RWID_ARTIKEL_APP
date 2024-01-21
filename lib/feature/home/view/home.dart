@@ -1,6 +1,6 @@
 import 'package:artikel_aplication/core/constant/colors.dart';
 import 'package:artikel_aplication/core/constant/images.dart';
-import 'package:artikel_aplication/feature/beranda/view/beranda.dart';
+import 'package:artikel_aplication/feature/artikel/view/artikel.dart';
 import 'package:artikel_aplication/feature/bookmark/view/bookmark_screen.dart';
 import 'package:artikel_aplication/feature/profile/view/profile_screen.dart';
 import 'package:flutter/material.dart';
@@ -78,7 +78,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
               ),
             ),
-            label: 'Pesanan',
+            label: 'Bookmark',
             backgroundColor: AppColors.white,
           ),
           BottomNavigationBarItem(

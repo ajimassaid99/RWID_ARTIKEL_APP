@@ -10,11 +10,14 @@ abstract class AuthenticationEvent extends Equatable {
 class SingInWithGoogel extends AuthenticationEvent {
   final String idToken;
   final String accessToken;
+  final String name;
+  final String email;
+  final String urlImage;
 
-  const SingInWithGoogel({required this.idToken, required this.accessToken});
+  const SingInWithGoogel({required this.idToken, required this.accessToken, required this.name, required this.email, required this.urlImage});
 
   @override
-  List<Object> get props => [idToken, accessToken];
+  List<Object> get props => [idToken, accessToken,name,email,urlImage];
 }
 
 
@@ -26,4 +29,22 @@ class SingInWithGoogel extends AuthenticationEvent {
 
   @override
   List<Object> get props => [email,password];
+}
+
+class CekUserTag extends AuthenticationEvent{
+ 
+  const CekUserTag();
+
+ @override
+  List<Object> get props => [];
+
+}
+
+class SignOut extends AuthenticationEvent{
+ 
+  const SignOut();
+
+ @override
+  List<Object> get props => [];
+
 }
