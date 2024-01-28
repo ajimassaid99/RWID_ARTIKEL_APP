@@ -22,6 +22,6 @@ class ArtikelModel {
       title: json['title'] ?? '',
       urlImage: json['url_image'] ?? '',
       content: json['content'] ?? '',
-      createdAt: json['createdAt'] ?? '',
+      createdAt: json['created_at'] ?? '',
       authorProfile: json["author"]["url_image"]??"" );
 }

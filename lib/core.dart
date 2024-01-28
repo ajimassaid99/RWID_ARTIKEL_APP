@@ -1,1 +1,0 @@
-part of 'package:aset_management/core.dart';

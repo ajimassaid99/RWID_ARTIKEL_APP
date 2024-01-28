@@ -3,26 +3,33 @@ import 'package:artikel_aplication/core/widget/costum_refresh.dart';
 import 'package:artikel_aplication/core/widget/shimmer_widget.dart';
 import 'package:artikel_aplication/feature/artikel/bloc/artikel_bloc.dart';
 import 'package:artikel_aplication/feature/artikel/model/artikel_model.dart';
+import 'package:artikel_aplication/feature/artikel/view/detail_artikel_screen.dart';
+import 'package:artikel_aplication/feature/artikel/view/widget/artikel_form.dart';
+import 'package:artikel_aplication/feature/bookmark/bloc/bookmark_bloc.dart';
+import 'package:artikel_aplication/feature/bookmark/model/bookmark.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import 'package:shimmer/shimmer.dart';
+import 'package:intl/intl.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({Key? key}) : super(key: key);
 
   @override
-  _DashboardScreenState createState() => _DashboardScreenState();
+  State<DashboardScreen> createState() => _DashboardScreenState();
 }
 
 class _DashboardScreenState extends State<DashboardScreen> {
   late ArtikelBloc artikelBloc;
+  late BookmarkBloc bookmarkBloc;
 
   @override
   void initState() {
     super.initState();
     artikelBloc = context.read<ArtikelBloc>();
     artikelBloc.add(const GetArtikel());
+    bookmarkBloc = context.read<BookmarkBloc>();
+    bookmarkBloc.add(const GetBookmark());
   }
 
   final RefreshController _refreshController =
@@ -42,7 +49,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
           backgroundColor: AppColors.primary500,
           title: const Text(
             'Home',
-            style: TextStyle(fontWeight: FontWeight.w900, fontSize: 40),
+            style: TextStyle(
+                fontWeight: FontWeight.w900,
+                fontSize: 40,
+                color: AppColors.white),
           ),
         ),
         body: BlocBuilder<ArtikelBloc, ArtikelState>(
@@ -61,7 +71,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
           },
         ),
         floatingActionButton: FloatingActionButton(
-          onPressed: () {},
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (BuildContext context) => const ArticleForm(),
+              ),
+            );
+          },
           backgroundColor: AppColors.primary500,
           child: const Icon(
             Icons.add_comment,
@@ -94,98 +111,139 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 
   Widget _buildArticleCard(ArtikelModel article) {
-    return Card(
-      color: AppColors.primary500,
-      margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-      elevation: 4.0,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Row(
-              children: [
-                CircleAvatar(
-                  backgroundImage: NetworkImage(article.authorProfile),
-                  radius: 20.0,
-                ),
-                const SizedBox(width: 8.0),
-                Text(
-                  article.author,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ],
+    DateTime tanggalAwal = DateTime.parse(article.createdAt);
+    String tanggalDiformat =
+        DateFormat('dd MMMM yyyy', 'id').format(tanggalAwal);
+
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (BuildContext context) => ArtikelDetailPage(
+             id: article.id,
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Expanded(
-                      flex: 2,
-                      child: Text(
-                        article.title,
-                        style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 20,
-                            fontWeight: FontWeight.w900),
-                      ),
+        );
+      },
+      child: Card(
+        color: AppColors.primary500,
+        margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+        elevation: 4.0,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Row(
+                children: [
+                  CircleAvatar(
+                    backgroundImage: NetworkImage(article.authorProfile),
+                    radius: 20.0,
+                  ),
+                  const SizedBox(width: 8.0),
+                  Text(
+                    article.author,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
                     ),
-                    Expanded(
-                      flex: 1,
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(
-                            8.0), // Adjust the radius as needed
-                        child: Image.network(
-                          article.urlImage,
-                          height: 60,
-                          fit: BoxFit.cover,
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded(
+                        flex: 2,
+                        child: Text(
+                          article.title,
+                          style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 20,
+                              fontWeight: FontWeight.w900),
                         ),
                       ),
-                    ),
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Text(
-                      "02 Januari 2023",
-                      style: TextStyle(color: Colors.white),
-                    ),
-                    Row(
-                      children: [
-                        const Icon(
-                          Icons.remove_red_eye,
-                          color: Colors.white,
-                        ),
-                        const SizedBox(width: 8.0),
-                        const Text(
-                          '20',
-                          style: TextStyle(color: Colors.white),
-                        ),
-                        const SizedBox(width: 8.0),
-                        IconButton(
-                          onPressed: () {},
-                          icon: const Icon(
-                            Icons.bookmark,
-                            color: Colors.grey,
+                      Expanded(
+                        flex: 1,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(
+                              8.0), // Adjust the radius as needed
+                          child: Image.network(
+                            article.urlImage,
+                            height: 60,
+                            fit: BoxFit.cover,
                           ),
                         ),
-                      ],
-                    ),
-                  ],
-                ),
-              ],
+                      ),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        tanggalDiformat,
+                        style: const TextStyle(color: Colors.white),
+                      ),
+                      Row(
+                        children: [
+                          const Icon(
+                            Icons.remove_red_eye,
+                            color: Colors.white,
+                          ),
+                          const SizedBox(width: 8.0),
+                          const Text(
+                            '20',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          const SizedBox(width: 8.0),
+                          BlocBuilder<BookmarkBloc, BookmarkState>(
+                            builder: (context, state) {
+                              List<BookmarkModel> bookmarks = [];
+                              if (state is BookmarkSuccess) {
+                                bookmarks = state.data;
+                              }
+                              if (state is BookmarkLoading) {
+                                return const ShimmerLoadingWidget(
+                                  height: 20,
+                                  width: 30,
+                                );
+                              }
+                              print("state ini $state");
+                              return IconButton(
+                                onPressed: () {
+                                  bookmarks.any((bookmark) =>
+                                          bookmark.artikelId == article.id)
+                                      ? bookmarkBloc.add(
+                                          DeleteBookmark(artikelId: article.id))
+                                      : bookmarkBloc.add(InsertBookmark(
+                                          artikelId: article.id));
+                                },
+                                icon: Icon(
+                                  Icons.bookmark,
+                                  color: bookmarks.any((bookmark) =>
+                                          bookmark.artikelId == article.id)
+                                      ? Colors.white
+                                      : Colors.grey,
+                                ),
+                              );
+                            },
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

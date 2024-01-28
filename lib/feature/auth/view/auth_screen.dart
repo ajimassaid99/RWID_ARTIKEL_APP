@@ -1,13 +1,10 @@
 import 'package:artikel_aplication/core/constant/colors.dart';
-import 'package:artikel_aplication/core/constant/size.dart';
 import 'package:artikel_aplication/core/extention/doubel_ext.dart';
-import 'package:artikel_aplication/core/extention/string_ext.dart';
 import 'package:artikel_aplication/core/widget/button_icon_widget.dart';
 import 'package:artikel_aplication/core/widget/button_widget.dart';
 import 'package:artikel_aplication/core/widget/form_input__password_widget.dart';
 import 'package:artikel_aplication/core/widget/form_input_widget.dart';
 import 'package:artikel_aplication/feature/auth/bloc/bloc/authentication_bloc.dart';
-import 'package:artikel_aplication/feature/home/bloc/tag_bloc.dart';
 import 'package:artikel_aplication/feature/home/view/home.dart';
 import 'package:artikel_aplication/feature/home/view/pilih_kategory.dart';
 import 'package:artikel_aplication/feature/register/view/register_screen.dart';
@@ -195,7 +192,7 @@ class _AuthPageState extends State<AuthPage> {
     final accessToken = googleAuth.accessToken;
     final idToken = googleAuth.idToken;
     final String displayName = googleUser.displayName ?? '';
-    final String email = googleUser.email ?? '';
+    final String email = googleUser.email;
     final String photoUrl = googleUser.photoUrl ?? '';
 
     if (accessToken == null) {

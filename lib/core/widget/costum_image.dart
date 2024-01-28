@@ -2,6 +2,7 @@ import 'dart:developer' as logger;
 import 'dart:math';
 
 import 'package:artikel_aplication/core/extention/screen_ext.dart';
+import 'package:artikel_aplication/core/widget/shimmer_widget.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -58,9 +59,7 @@ class CustomImageNetwork extends StatelessWidget {
       colorBlendMode: colorBlendMode,
       fit: fit ?? BoxFit.cover,
       progressIndicatorBuilder: (_, url, downloadProgress) {
-        return const Center(
-          child: CircularProgressIndicator(),
-        );
+        return ShimmerLoadingWidget(height: defaultHeight, width: defaultWidth);
       },
       errorWidget: (_, url, error) {
         if (kDebugMode) {

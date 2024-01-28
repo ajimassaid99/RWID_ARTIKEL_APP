@@ -13,8 +13,7 @@ class DummyBookmarkData {
     return [
       Bookmark(title: 'Bookmark 1', url: 'https://example.com/bookmark1'),
       Bookmark(title: 'Bookmark 2', url: 'https://example.com/bookmark2'),
-      Bookmark(title: 'Bookmark 3', url: 'https://example.com/bookmark3'),
-      // Add more bookmarks as needed
+      Bookmark(title: 'Bookmark 3', url: 'https://example.com/bookmark3')
     ];
   }
 }
@@ -23,7 +22,7 @@ class BookmarkScreen extends StatefulWidget {
   const BookmarkScreen({Key? key}) : super(key: key);
 
   @override
-  _BookmarkScreenState createState() => _BookmarkScreenState();
+  State<BookmarkScreen> createState() => _BookmarkScreenState();
 }
 
 class _BookmarkScreenState extends State<BookmarkScreen> {
@@ -39,7 +38,7 @@ class _BookmarkScreenState extends State<BookmarkScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Bookmarks'),
+        title: const Text('Bookmarks'),
       ),
       body: ListView.builder(
         itemCount: bookmarks.length,
@@ -56,7 +55,7 @@ class _BookmarkScreenState extends State<BookmarkScreen> {
         title: Text(bookmark.title),
         subtitle: Text(bookmark.url),
         onTap: () {
-          // Handle bookmark item tap if needed
+       
         },
       ),
     );

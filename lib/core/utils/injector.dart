@@ -1,5 +1,6 @@
 import 'package:artikel_aplication/feature/artikel/bloc/artikel_bloc.dart';
 import 'package:artikel_aplication/feature/auth/bloc/bloc/authentication_bloc.dart';
+import 'package:artikel_aplication/feature/bookmark/bloc/bookmark_bloc.dart';
 import 'package:artikel_aplication/feature/home/bloc/tag_bloc.dart';
 import 'package:artikel_aplication/feature/register/bloc/register_bloc.dart';
 import 'package:get_it/get_it.dart';
@@ -11,4 +12,5 @@ void init() {
   locator.registerFactory(() => TagBloc());
   locator.registerFactory(() => RegisterBloc());
   locator.registerFactory(() => ArtikelBloc());
+  locator.registerFactory(() => BookmarkBloc());
 }
